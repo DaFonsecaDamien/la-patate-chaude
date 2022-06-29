@@ -40,6 +40,22 @@ pub struct ChallengeResult{
     next_target: String
 }
 
+pub enum ChallengeValue{
+    Unreachable,
+    Timeout,
+    BadResult { used_time: f64, next_target: String },
+    Ok { used_time: f64, next_target: String }
+}
+
+pub enum ChallengeAnswer{
+    HashCashChallenge(MD5HashCashOutput)
+}
+
+pub struct ReportedChallengeResult{
+    name: String,
+    value: JobValue
+}
+
 pub struct RoundSummary{
     challenge: String,
     chain: Vec<ReportedChallengeResult>
