@@ -1,3 +1,5 @@
+use crate::hash_cash_model::{MD5HashCashInput, MD5HashCashOutput};
+
 pub struct Hello {}
 
 pub struct Welcome {
@@ -53,7 +55,7 @@ pub enum ChallengeAnswer{
 
 pub struct ReportedChallengeResult{
     name: String,
-    value: JobValue
+    // value: JobValue
 }
 
 pub struct RoundSummary{
