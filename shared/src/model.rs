@@ -1,25 +1,40 @@
 use crate::hash_cash_model::{MD5HashCashInput, MD5HashCashOutput};
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Message{
+    Hello,
+    Welcome(Welcome),
+    Subscribe(Subscribe),
+    SubscribeResult(SubscribeResult)
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Hello {}
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Welcome {
     version: u8
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Subscribe {
     name: String
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum SubscribeError {
     AlreadyRegistered,
     InvalidName
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum SubscribeResult{
     Ok,
     Err(SubscribeError)
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct PublicPlayer {
     name: String,
     stream_id: String,
@@ -29,19 +44,23 @@ pub struct PublicPlayer {
     total_used_time: f64
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct PublicLeaderBoard {
     player_list: Vec<PublicPlayer>
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Challenge{
     HashCashChallenge(MD5HashCashInput)
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ChallengeResult{
     result: ChallengeAnswer,
     next_target: String
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ChallengeValue{
     Unreachable,
     Timeout,
@@ -49,20 +68,24 @@ pub enum ChallengeValue{
     Ok { used_time: f64, next_target: String }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ChallengeAnswer{
     HashCashChallenge(MD5HashCashOutput)
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ReportedChallengeResult{
     name: String,
     // value: JobValue
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct RoundSummary{
     challenge: String,
     chain: Vec<ReportedChallengeResult>
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct EndOfGame{
     leader_board: PublicLeaderBoard
 }
