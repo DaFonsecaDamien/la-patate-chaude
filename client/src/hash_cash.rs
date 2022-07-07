@@ -1,5 +1,5 @@
 use shared::hash_cash_model::{MD5HashCashInput, MD5HashCashOutput};
-use std::process::{Command, Output};
+use std::process::{Command};
 
 pub struct HashCash {
     input: MD5HashCashInput,
@@ -16,14 +16,14 @@ impl HashCash {
         }
     }
 
-    pub fn run(mut self) -> Option<MD5HashCashOutput> {
+    pub fn run(mut self) -> MD5HashCashOutput {
         for _ in 0..u64::MAX {
             if self.verify() {
-                return Some(self.output);
+                return self.output;
             }
             self.counter += 1;
         }
-        None
+        self.output
     }
     fn verify(&mut self) -> bool {
         let seed = format!("{:016X}", self.counter);

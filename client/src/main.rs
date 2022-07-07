@@ -2,11 +2,9 @@ mod hash_cash;
 
 use std::io::{Read, Write};
 use std::net::TcpStream;
-use std::process::Output;
 use std::str::from_utf8;
-use rand::Rng;
-use shared::model::{Challenge, ChallengeAnswer, ChallengeResult, Message, Subscribe, Welcome};
-use shared::hash_cash_model::MD5HashCashInput;
+use shared::model::{Challenge, ChallengeAnswer, ChallengeResult, Message, Subscribe};
+use shared::hash_cash_model::{MD5HashCashInput, MD5HashCashOutput};
 use crate::hash_cash::HashCash;
 
 fn main() {
@@ -22,7 +20,7 @@ fn main() {
                     Message::Hello => {}
                     Message::Welcome(message) => {
                         println!("Welcome to the server, version {}", message.version);
-                        send_message(&mut stream, &Message::Subscribe(Subscribe { name: "Adrien".to_string() }));
+                        send_message(&mut stream, &Message::Subscribe(Subscribe { name: "Henri".to_string() }));
                     }
                     Message::SubscribeResult(subscribe) => {
                         println!("{:?}", subscribe);
@@ -33,11 +31,11 @@ fn main() {
                     Message::Challenge(challenge) => {
                         message_challenge(&mut stream, challenge);
                     }
-                    Message::RoundSummary(roundSummary) => {
-                        println!("{:?}", roundSummary);
+                    Message::RoundSummary(round_summary) => {
+                        println!("{:?}", round_summary);
                     },
-                    Message::EndOfGame(endOfGame) => {
-                        println!("{:?}", endOfGame);
+                    Message::EndOfGame(end_of_game) => {
+                        println!("{:?}", end_of_game);
                     }
                     _ => {}
                 }
@@ -83,8 +81,7 @@ fn main() {
 
         match challenge {
             Challenge::HashCashChallenge(input) => {
-                let mut hash_cash = HashCash::new(input);
-                let answer = hash_cash.run();
+                let answer = run_hash_cash(input);
                 challenge_answer = ChallengeAnswer::HashCashChallenge(answer);
             }
         }
@@ -96,8 +93,8 @@ fn main() {
         send_message(stream, &Message::ChallengeResult(challenge_result));
     }
 
-    fn run_hash_cash(input: MD5HashCashInput) {
-        let mut hash_cash = HashCash::new(input);
-        hash_cash.run();
+    fn run_hash_cash(input: MD5HashCashInput) -> MD5HashCashOutput {
+        let hash_cash = HashCash::new(input);
+        hash_cash.run()
     }
 }
