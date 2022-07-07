@@ -22,7 +22,7 @@ fn main() {
                     Message::Hello => {}
                     Message::Welcome(message) => {
                         println!("Welcome to the server, version {}", message.version);
-                        send_message(&mut stream, &Message::Subscribe(Subscribe { name: "Henri".to_string() }));
+                        send_message(&mut stream, &Message::Subscribe(Subscribe { name: "Adrien".to_string() }));
                     }
                     Message::SubscribeResult(subscribe) => {
                         println!("{:?}", subscribe);
@@ -40,7 +40,6 @@ fn main() {
                         println!("{:?}", endOfGame);
                     }
                     _ => {}
-                    //HashCash::new(MD5HashCashInput { complexity: 9, message: "hello".parse().unwrap() }).run();
                 }
             }
         }
@@ -81,7 +80,6 @@ fn main() {
 
     fn message_challenge(stream: &mut TcpStream, challenge: Challenge){
         let challenge_answer: ChallengeAnswer;
-        let mut rng = rand::thread_rng();
 
         match challenge {
             Challenge::HashCashChallenge(input) => {
@@ -91,16 +89,9 @@ fn main() {
             }
         }
 
-        let mut index = rng.gen_range(0..game_state.players.len());
-        while game_state.players[index].name == game_state.name {
-            index = rng.gen_range(0..game_state.players.len());
-        }
-
-        let next_target = game_state.players[index].name.clone();
-
         let challenge_result = ChallengeResult {
             result: challenge_answer,
-            next_target,
+            next_target: "".to_string(),
         };
         send_message(stream, &Message::ChallengeResult(challenge_result));
     }
