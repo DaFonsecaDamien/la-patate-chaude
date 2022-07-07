@@ -6,7 +6,12 @@ pub enum Message{
     Hello,
     Welcome(Welcome),
     Subscribe(Subscribe),
-    SubscribeResult(SubscribeResult)
+    SubscribeResult(SubscribeResult),
+    PublicLeaderBoard(Vec<PublicPlayer>),
+    Challenge(Challenge),
+    ChallengeResult(ChallengeResult),
+    RoundSummary(RoundSummary),
+    EndOfGame(EndOfGame),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -14,12 +19,12 @@ pub struct Hello {}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Welcome {
-    version: u8
+    pub version: u8
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Subscribe {
-    name: String
+    pub name: String
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -45,19 +50,14 @@ pub struct PublicPlayer {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PublicLeaderBoard {
-    player_list: Vec<PublicPlayer>
-}
-
-#[derive(Debug, Serialize, Deserialize)]
 pub enum Challenge{
     HashCashChallenge(MD5HashCashInput)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ChallengeResult{
-    result: ChallengeAnswer,
-    next_target: String
+    pub result: ChallengeAnswer,
+    pub next_target: String
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -87,5 +87,5 @@ pub struct RoundSummary{
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct EndOfGame{
-    leader_board: PublicLeaderBoard
+    leader_board: Vec<PublicPlayer>
 }
