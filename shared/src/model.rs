@@ -41,7 +41,7 @@ pub enum SubscribeResult{
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PublicPlayer {
-    name: String,
+    pub name: String,
     stream_id: String,
     score: i32,
     steps: u32,
@@ -51,7 +51,8 @@ pub struct PublicPlayer {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Challenge{
-    HashCashChallenge(MD5HashCashInput)
+    MD5HashCash(MD5HashCashInput),
+    //MonstrousMazeChallenge(MonstrousMazeInput)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -70,7 +71,7 @@ pub enum ChallengeValue{
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum ChallengeAnswer{
-    HashCashChallenge(MD5HashCashOutput)
+    MD5HashCash(MD5HashCashOutput)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
